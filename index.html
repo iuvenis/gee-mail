@@ -1,18 +1,105 @@
+<!DOCTYPE html>
+
 <html>
-	<head>
-		<script src="js/mail-generator.js"></script>
-		<link href="css/style.css" rel="stylesheet" media="screen">
-    <script>
-      window.onload = function(){
-        // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE. 
-        // We have to use window.onload so your JavaScript doesn't execute until the page has loaded and all HTML has been downloaded to your browser
-        
-      };
-    </script>
-	</head>
-	<body>
-		<div class="container" id="main">
-			Build Me!
+
+<head>
+	<script src="js/mail-generator.js"></script>
+	<link href="css/style.css" rel="stylesheet" media="screen">
+	<title>Gee-Mail</title>
+	<script>
+		window.onload = function() {
+
+			var msgCounter = 0;
+
+			function createNew() {
+				formedMsg(getNewMessage());
+			}
+
+			function formedMsg(msgData) {
+
+				var emails = document.createElement("div");
+				emails.setAttribute("id", "message" + ++msgCounter);
+				document.getElementById("msgCounter").innerHTML = msgCounter;
+
+				var Message = "messagebody" + msgCounter;
+				emails.onclick = function() {
+					var status =
+						document.getElementById(Message);
+
+					if (status.style.display == "none")
+						status.style.display = "block";
+					else
+						status.style.display = "none";
+				}
+
+				var msgCollumns;
+				msgCollumns = document.createElement("div");
+				msgCollumns.setAttribute("class", "date");
+				msgCollumns.innerHTML = msgData.date.toLocaleString();
+				emails.appendChild(msgCollumns);
+
+				msgCollumns = document.createElement("div");
+				msgCollumns.setAttribute("class", "sender");
+				msgCollumns.innerHTML = msgData.sender;
+				emails.appendChild(msgCollumns);
+
+				msgCollumns = document.createElement("div");
+				msgCollumns.setAttribute("class", "subject");
+				msgCollumns.innerHTML = msgData.subject;
+				emails.appendChild(msgCollumns);
+
+				msgCollumns = document.createElement("div");
+				msgCollumns.setAttribute("class", "body");
+				msgCollumns.style.display = "none";
+				msgCollumns.setAttribute("id", "messagebody" + msgCounter);
+				msgCollumns.innerHTML = msgData.body;
+				emails.appendChild(msgCollumns);
+
+
+				document.getElementById("msgStructure")
+					.appendChild(emails);
+
+				var msgType = "odd";
+				if (msgType == "odd")
+					msgType = "even";
+				else
+					msgType = "odd"
+			}
+
+			for (i of window.geemails) {
+				formedMsg(i);
+			}
+
+			setInterval(function() {
+				createNew();
+			}, 4000);
+		};
+	</script>
+</head>
+
+<body>
+	<nav class="navbar-fixed">
+		<div class="headerName"><img src="geemail.png"></div>
+		<ul>
+			<li><a href="#" class="fade">Mail (<span id="msgCounter">0</span>)</a></li>
+			<li><a href="#" class="fade">Junk</a></li>
+			<li><a href="#" class="fade">Trash</a></li>
+		</ul>
+	</nav>
+	
+	<div class="msgHeader">
+		<li class="headDate">Date</li>
+		<li class="headSender">Sender</li>
+		<li class="headSubject">Subject</li>
+	</div>
+
+	<div class="container" id="main">
+		<div class="msgStyle" id="msgStructure">
+			<span class="msgStyle date"></span>
+			<span class="msgStyle sender"></span>
+			<span class="msgStyle subject"></span>
 		</div>
-	</body>
+	</div>
+</body>
+
 </html>
